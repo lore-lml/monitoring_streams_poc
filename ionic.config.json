@@ -1,0 +1,7 @@
+{
+  "name": "provenance_streams_poc",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
