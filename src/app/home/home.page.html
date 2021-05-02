@@ -1,0 +1,22 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>BioEnPro4To</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div id="container">
+    <ion-grid>
+      <ion-row *ngFor="let t of tabs">
+        <ion-col *ngFor="let card of t">
+          <app-dashboard-button
+            [icon]="card.icon"
+            [title]="card.title" [routerLink]="card.url" routerLinkActive="selected"></app-dashboard-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>
