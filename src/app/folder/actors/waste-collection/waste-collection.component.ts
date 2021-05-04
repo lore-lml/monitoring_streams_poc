@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {ChannelItem} from '../../comp/channel-list/channel-list.component';
+import {ChannelsService, ChannelsType} from '../../../services/channels.service';
 
 @Component({
   selector: 'app-waste-collection',
@@ -7,7 +9,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WasteCollectionComponent implements OnInit {
 
-  constructor() { }
+  items: ChannelItem[];
+  constructor(private channelService: ChannelsService) {
+    channelService.getChannels(ChannelsType.wasteCollection).then(items => this.items = items);
+  }
 
   ngOnInit() {}
 

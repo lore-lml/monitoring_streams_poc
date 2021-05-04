@@ -7,6 +7,11 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <app-waste-collection></app-waste-collection>
+<ion-content [fullscreen]="true" [ngSwitch]="folder.toLocaleLowerCase()">
+  <h1 *ngIf="folder !== 'Impostazioni'">Canali Disponibili</h1>
+  <app-waste-collection *ngSwitchCase="'raccolta'"></app-waste-collection>
+  <app-scales *ngSwitchCase="'pesata'"></app-scales>
+  <app-biocells *ngSwitchCase="'biocelle'"></app-biocells>
 </ion-content>
+
+
