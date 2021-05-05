@@ -1,13 +1,16 @@
 import {BioCellMsg} from './messages/bio-cell-msg.model';
 import {ChannelReaderWrap, MsgInfo} from './channel-reader-wrap.model';
 import {ChannelItem} from '../folder/comp/channel-list/channel-list.component';
+import {EventEmitter} from '@angular/core';
 
 export class BioCellChannel extends ChannelReaderWrap{
   msgs: BioCellMsg[];
+  msgEventEmitter: EventEmitter<BioCellMsg[]>;
 
   constructor(channelId: string, announceId: string) {
     super(channelId, announceId);
     this.msgs = [];
+    this.msgEventEmitter = new EventEmitter();
   }
 
   async fetchMsg(): Promise<any> {
@@ -34,10 +37,6 @@ export class BioCellChannel extends ChannelReaderWrap{
     }
   }
 
-  getMsgs(): BioCellMsg[] {
-    return this.msgs;
-  }
-
   get channelItem(): ChannelItem{
     const len = this.msgs.length;
     if (len === 0) {
@@ -47,7 +46,11 @@ export class BioCellChannel extends ChannelReaderWrap{
       channelInfo: this.reader.channel_address(),
       icon: 'scale-outline',
       title: len !== 0 ? this.msgs[0].digestorId : 'Unknown',
-      subtitle: len !== 0 ? `Timestamp ${this.msgs[len-1].timestamp}` : 'Timestamp unknown'
+      subtitle: len !== 0 ? `Ultimo Aggiornamento: ${this.timeConverter(this.msgs[len-1].timestamp)}` : 'Timestamp unknown'
     };
+  }
+
+  get msgEvent(): EventEmitter<BioCellMsg[]>{
+    return this.msgEventEmitter;
   }
 }

@@ -12,17 +12,13 @@ export class ScalesComponent implements OnInit, OnDestroy {
 
   items: ChannelItem[];
   itemSub: Subscription;
-  constructor(private channelService: ChannelsService) {
-    this.items = channelService.getChannelItems(ChannelsType.scales);
-    this.itemSub = channelService.getChannelEvents(ChannelsType.scales)
+  constructor(private channelService: ChannelsService) {}
+
+  ngOnInit() {
+    this.items = this.channelService.getChannelItems(ChannelsType.scales);
+    this.itemSub = this.channelService.getChannelItemEvents(ChannelsType.scales)
       .subscribe(items => this.items = items);
   }
-
-  getItems(){
-    return this.channelService.getChannelEvents(ChannelsType.scales);
-  }
-
-  ngOnInit() {}
 
   ngOnDestroy(): void {
     this.itemSub.unsubscribe();

@@ -1,14 +1,17 @@
 import {ScaleMsg} from './messages/scale-msg.model';
 import {ChannelReaderWrap} from './channel-reader-wrap.model';
 import {ChannelItem} from '../folder/comp/channel-list/channel-list.component';
+import {EventEmitter} from '@angular/core';
 
 
 export class ScaleChannel extends ChannelReaderWrap{
   msgs: ScaleMsg[];
+  msgEventEmitter: EventEmitter<ScaleMsg[]>;
 
   constructor(channelId: string, announceId: string) {
     super(channelId, announceId);
     this.msgs = [];
+    this.msgEventEmitter = new EventEmitter();
   }
 
   async fetchMsg(){
@@ -32,10 +35,6 @@ export class ScaleChannel extends ChannelReaderWrap{
     }
   }
 
-  getMsgs(): ScaleMsg[] {
-    return this.msgs;
-  }
-
   get channelItem(): ChannelItem{
     const len = this.msgs.length;
     if (len === 0) {
@@ -45,8 +44,11 @@ export class ScaleChannel extends ChannelReaderWrap{
       channelInfo: this.reader.channel_address(),
       icon: 'scale-outline',
       title: len !== 0 ? this.msgs[0].plant : 'Unknown',
-      subtitle: len !== 0 ? `Timestamp ${this.msgs[len-1].timestamp}` : 'Timestamp unknown'
+      subtitle: len !== 0 ? `Ultimo Aggiornamento: ${this.timeConverter(this.msgs[len-1].timestamp)}` : 'Timestamp unknown'
     };
   }
 
+  get msgEvent(): EventEmitter<ScaleMsg[]>{
+    return this.msgEventEmitter;
+  }
 }

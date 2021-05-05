@@ -12,17 +12,13 @@ export class WasteCollectionComponent implements OnInit, OnDestroy {
 
   items: ChannelItem[];
   itemSub: Subscription;
-  constructor(private channelService: ChannelsService) {
-    this.items = channelService.getChannelItems(ChannelsType.wasteCollection);
-    this.itemSub = channelService.getChannelEvents(ChannelsType.wasteCollection)
+  constructor(private channelService: ChannelsService) {}
+
+  ngOnInit() {
+    this.items = this.channelService.getChannelItems(ChannelsType.wasteCollection);
+    this.itemSub = this.channelService.getChannelItemEvents(ChannelsType.wasteCollection)
       .subscribe(items => this.items = items);
   }
-
-  getItems(){
-    return this.channelService.getChannelEvents(ChannelsType.wasteCollection);
-  }
-
-  ngOnInit() {}
 
   ngOnDestroy(): void {
     this.itemSub.unsubscribe();

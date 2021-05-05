@@ -12,17 +12,13 @@ export class BiocellsComponent implements OnInit, OnDestroy {
 
   items: ChannelItem[];
   itemSub: Subscription;
-  constructor(private channelService: ChannelsService) {
-    this.items = channelService.getChannelItems(ChannelsType.bioCells);
-    this.itemSub = channelService.getChannelEvents(ChannelsType.bioCells)
+  constructor(private channelService: ChannelsService) {}
+
+  ngOnInit() {
+    this.items = this.channelService.getChannelItems(ChannelsType.bioCells);
+    this.itemSub = this.channelService.getChannelItemEvents(ChannelsType.bioCells)
       .subscribe(items => this.items = items);
   }
-
-  getItems(){
-    return this.channelService.getChannelEvents(ChannelsType.bioCells);
-  }
-
-  ngOnInit() {}
 
   ngOnDestroy(): void {
     this.itemSub.unsubscribe();
