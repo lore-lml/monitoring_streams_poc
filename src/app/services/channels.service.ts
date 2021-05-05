@@ -1,9 +1,11 @@
-import {Injectable} from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import {ChannelInfo} from '../../../wasm/pkg';
 import {WasteCollectionChannel} from '../models/waste-collection.model';
 import {ScaleChannel} from '../models/scale.model';
 import {BioCellChannel} from '../models/bio-cell.model';
 import {ChannelReaderWrap} from '../models/channel-reader-wrap.model';
+import {ChannelItem} from '../folder/comp/channel-list/channel-list.component';
+import {WasteCollectionMsg} from '../models/messages/waste-collection-msg.model';
 
 export enum ChannelsType {
   wasteCollection,
@@ -30,13 +32,29 @@ export class ChannelsService {
   scaleChannels: ScaleChannel[];
   bioCellChannels: BioCellChannel[];
 
+  wasteChItemsEventEmitter = new EventEmitter<ChannelItem[]>();
+  scaleChItemsEventEmitter= new EventEmitter<ChannelItem[]>();
+  bioCellChItemsEventEmitter= new EventEmitter<ChannelItem[]>();
+  wasteChMsgs = new EventEmitter<WasteCollectionMsg[]>();
+  scaleChMsgs = new EventEmitter<WasteCollectionMsg[]>();
+  bioCellChMsgs = new EventEmitter<WasteCollectionMsg[]>();
+
   constructor(){
     this.wasteChannels = this.wasteChInfo.map(value => new WasteCollectionChannel(value.channel_id(), value.announce_id()));
     this.scaleChannels = this.scaleChInfo.map(value => new ScaleChannel(value.channel_id(), value.announce_id()));
     this.bioCellChannels = this.bioChInfo.map(value => new BioCellChannel(value.channel_id(), value.announce_id()));
-    this.wasteChannels.map(value => this.initChannel(value)).forEach(value => value.then());
-    this.scaleChannels.map(value => this.initChannel(value)).forEach(value => value.then());
-    this.bioCellChannels.map(value => this.initChannel(value)).forEach(value => value.then());
+    this.wasteChannels.map(value => this.initChannel(value)).forEach(value => value.then(() => {
+      const items = this.wasteChannels.map(ch => ch.channelItem).filter(ch => ch !== null);
+      this.wasteChItemsEventEmitter.emit(items);
+    }));
+    this.scaleChannels.map(value => this.initChannel(value)).forEach(value => value.then(() => {
+      const items = this.scaleChannels.map(ch => ch.channelItem).filter(ch => ch !== null);
+      this.scaleChItemsEventEmitter.emit(items);
+    }));
+    this.bioCellChannels.map(value => this.initChannel(value)).forEach(value => value.then(() => {
+      const items = this.bioCellChannels.map(ch => ch.channelItem).filter(ch => ch !== null);
+      this.bioCellChItemsEventEmitter.emit(items);
+    }));
   }
 
   async initChannel(channel: ChannelReaderWrap){
@@ -44,7 +62,7 @@ export class ChannelsService {
     await channel.fetchMsg();
   }
 
-  getChannels(type: ChannelsType){
+  getChannelItems(type: ChannelsType){
     switch (type){
       case ChannelsType.wasteCollection:
         return this.wasteChannels.map(ch => ch.channelItem).filter(ch => ch !== null);
@@ -52,6 +70,17 @@ export class ChannelsService {
         return this.scaleChannels.map(ch => ch.channelItem).filter(ch => ch !== null);
       case ChannelsType.bioCells:
         return this.bioCellChannels.map(ch => ch.channelItem).filter(ch => ch !== null);
+    }
+  }
+
+  getChannelEvents(type: ChannelsType){
+    switch (type){
+      case ChannelsType.wasteCollection:
+        return this.wasteChItemsEventEmitter;
+      case ChannelsType.scales:
+        return this.scaleChItemsEventEmitter;
+      case ChannelsType.bioCells:
+        return this.bioCellChItemsEventEmitter;
     }
   }
 }
