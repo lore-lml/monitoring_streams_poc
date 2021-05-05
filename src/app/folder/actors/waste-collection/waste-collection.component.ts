@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {ChannelItem} from '../../comp/channel-list/channel-list.component';
 import {ChannelsService, ChannelsType} from '../../../services/channels.service';
 
 @Component({
@@ -9,9 +8,10 @@ import {ChannelsService, ChannelsType} from '../../../services/channels.service'
 })
 export class WasteCollectionComponent implements OnInit {
 
-  items: ChannelItem[];
-  constructor(private channelService: ChannelsService) {
-    channelService.getChannels(ChannelsType.wasteCollection).then(items => this.items = items);
+  constructor(private channelService: ChannelsService) {}
+
+  getItems(){
+    return this.channelService.getChannels(ChannelsType.wasteCollection);
   }
 
   ngOnInit() {}

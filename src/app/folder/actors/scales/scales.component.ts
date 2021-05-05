@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {ChannelItem} from '../../comp/channel-list/channel-list.component';
 import {ChannelsService, ChannelsType} from '../../../services/channels.service';
 
 @Component({
@@ -9,9 +8,11 @@ import {ChannelsService, ChannelsType} from '../../../services/channels.service'
 })
 export class ScalesComponent implements OnInit {
 
-  items: ChannelItem[];
   constructor(private channelService: ChannelsService) {
-    channelService.getChannels(ChannelsType.scales).then(items => this.items = items);
+  }
+
+  getItems(){
+    return this.channelService.getChannels(ChannelsType.scales);
   }
 
   ngOnInit() {}
