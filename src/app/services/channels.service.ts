@@ -17,14 +17,14 @@ export enum ChannelsType {
 })
 export class ChannelsService {
   wasteChInfo = [
-    new ChannelInfo('b90ce003cde9818368a878943aa98b374549f90d486ac467b8dc18b70d3f3f5e0000000000000000', 'b29dd09befb3312dcc6aa3d6'),
-    new ChannelInfo('bbe0bf4ea1ddead960e2caa65ccc9bf8e035957804f2a9728fcf9251d5ab644d0000000000000000', '2636031913bcb5548e17a289'),
+    new ChannelInfo('06c6957c43ef3836046c829f38d9e3925b2dcf8dc59751c05e91036addb1016f0000000000000000', '91ad4b86988b45d04c669166'),
+    new ChannelInfo('33b2316969376897056f0dfa1196814bc010c3e319e5817ed5c13f590f02d6d20000000000000000', '6326ed88f9cfc7deced291e8'),
   ];
   scaleChInfo = [
-    new ChannelInfo('d2f381bd5f61e0b203221f24bb2e1026f74b53dc42d4c273f1a8d45c41262a9e0000000000000000', '3d3a08bbd9cb16b1f4c3072a'),
+    new ChannelInfo('3e830cc51852171913e16d1caf8d631d92c0f6c5b90816809d6833fbf56abe740000000000000000', 'a561dc92570167dfc0a54beb'),
   ];
   bioChInfo = [
-    new ChannelInfo('9c51fe17b591a2b89791bbced7d672e53f0da4caeedcac12d361cea9562e71ba0000000000000000', '3771422feb7b13dcb6eefda9'),
+    new ChannelInfo('6add65811fb9769befc9d4b7be9a1c4a8e568afe2841f8ed5cee65970dbd58b20000000000000000', '6995372a5dbb3fcd94e709da'),
   ];
 
   wasteChannels: WasteCollectionChannel[];
